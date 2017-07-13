@@ -598,17 +598,7 @@ def do_meshes(useSelected,useNormals,
     #print(ob.name)
 
     worldMat=fixModelMat*ob.matrix_world if useTransform else fixModelMat
-    # normalMat=fixNormalMat*ob.matrix_world.normalized().to_3x3() if useTransform else fixNormalMat
-
-    normalMat=fixNormalMat
-
-    if useTransform:
-      normalMat=worldMat.copy()
-      normalMat.invert()
-      normalMat.transpose()
-      normalMat=normalMat.to_3x3()
-
-
+    normalMat=fixNormalMat*ob.matrix_world.to_quaternion().to_matrix() if useTransform else fixNormalMat
 
     #
     myme=do_mesh(ob.data,worldMat,normalMat,useNormals,useTexcoords,
